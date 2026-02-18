@@ -36,25 +36,7 @@ captures/
 
 # IntelliJ
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/assetWizardSettings.xml
-.idea/dictionaries
-.idea/libraries
-.idea/jarRepositories.xml
-.idea/caches
-.idea/modules.xml
-.idea/.name
-.idea/compiler.xml
-.idea/misc.xml
-.idea/deploymentTargetDropDown.xml
-.idea/vcs.xml
-
-# Keep some IntelliJ config (optional - remove if you want to ignore all .idea)
-# !.idea/codeStyles
-# !.idea/inspectionProfiles
-# !.idea/runConfigurations
+.idea/
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
