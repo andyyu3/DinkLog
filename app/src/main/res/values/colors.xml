@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1B5E20</color>
+    <color name="secondary">#4CAF50</color>
+    <color name="white">#FFFFFF</color>
+    <color name="win_green">#2E7D32</color>
+    <color name="loss_red">#C62828</color>
+    <color name="light_gray">#F5F5F5</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DinkLog</string>
+
+    <!-- Navigation -->
+    <string name="nav_history">History</string>
+    <string name="nav_stats">Stats</string>
+
+    <!-- Login -->
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="btn_login">Log In</string>
+    <string name="btn_signup_link">Don\'t have an account? Sign Up</string>
+
+    <!-- Signup -->
+    <string name="label_name">Name</string>
+    <string name="label_confirm_password">Confirm Password</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="btn_login_link">Already have an account? Log In</string>
+
+    <!-- History -->
+    <string name="empty_history_title">No matches yet</string>
+    <string name="empty_history_subtitle">Tap + to log your first match</string>
+
+    <!-- Add Match -->
+    <string name="title_add_match">Log Match</string>
+    <string name="label_opponent1">Opponent 1</string>
+    <string name="label_opponent2">Opponent 2 (optional)</string>
+    <string name="label_partner">Partner (optional)</string>
+    <string name="label_team_score">Your Score</string>
+    <string name="label_opponent_score">Opponent Score</string>
+    <string name="label_location">Location</string>
+    <string name="label_notes">Notes (optional)</string>
+    <string name="btn_save_match">Save Match</string>
+
+    <!-- Stats -->
+    <string name="title_stats">Your Stats</string>
+    <string name="label_total_matches">Total Matches</string>
+    <string name="label_wins">Wins</string>
+    <string name="label_losses">Losses</string>
+    <string name="label_win_rate">Win Rate</string>
+    <string name="label_no_stats">Play some matches to see your stats!</string>
+</resources>
