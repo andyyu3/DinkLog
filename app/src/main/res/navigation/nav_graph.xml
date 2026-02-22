@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <!-- Login Screen -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.dinklog.pages.Login"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_login_to_history"
+            app:destination="@id/historyFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_login_to_signup"
+            app:destination="@id/signupFragment" />
+    </fragment>
+
+    <!-- Signup Screen -->
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.dinklog.pages.Signup"
+        android:label="Sign Up"
+        tools:layout="@layout/fragment_signup">
+
+        <action
+            android:id="@+id/action_signup_to_history"
+            app:destination="@id/historyFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- History Screen (Main) -->
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.dinklog.pages.History"
+        android:label="Match History"
+        tools:layout="@layout/fragment_history">
+
+        <action
+            android:id="@+id/action_history_to_addMatch"
+            app:destination="@id/addMatchFragment" />
+    </fragment>
+
+    <!-- Add Match Screen -->
+    <fragment
+        android:id="@+id/addMatchFragment"
+        android:name="com.dinklog.pages.AddMatch"
+        android:label="Log Match"
+        tools:layout="@layout/fragment_add_match" />
+
+    <!-- Stats Screen -->
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.dinklog.pages.Stats"
+        android:label="Stats"
+        tools:layout="@layout/fragment_stats" />
+
+</navigation>
