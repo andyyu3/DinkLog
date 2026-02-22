@@ -31,9 +31,9 @@ app/build.gradle.kts ← "What THIS module needs" (dependencies, SDK versions)
 ### Key Configuration Concepts
 
 **`compileSdk` vs `minSdk` vs `targetSdk`:**
-- `compileSdk = 34` — Which Android API level to compile against. You can USE APIs up to this level.
+- `compileSdk = 36` — Which Android API level to compile against. You can USE APIs up to this level.
 - `minSdk = 26` — Oldest Android version that can install your app (Android 8.0). Devices below this can't install it.
-- `targetSdk = 34` — Which version your app was TESTED against. Android uses this to decide whether to apply backward-compatibility behaviors.
+- `targetSdk = 36` — Which version your app was TESTED against. Android uses this to decide whether to apply backward-compatibility behaviors.
 
 **`viewBinding = true`:**
 Generates a type-safe binding class for each XML layout. `FragmentLoginBinding` is auto-generated from `fragment_login.xml`. Each view with an `android:id` becomes a property: `binding.emailInput` instead of `findViewById(R.id.email_input)`. Caught at compile time, not runtime.
