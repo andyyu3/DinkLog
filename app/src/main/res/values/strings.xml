@@ -21,6 +21,7 @@
     <string name="btn_login_link">Already have an account? Log In</string>
 
     <!-- History -->
+    <string name="cd_add_match">Add match</string>
     <string name="empty_history_title">No matches yet</string>
     <string name="empty_history_subtitle">Tap + to log your first match</string>
 
