@@ -3,23 +3,61 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/surface">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:layout_height="wrap_content">
+
+        <!-- Branded header -->
+        <FrameLayout
+            android:id="@+id/header"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:background="@drawable/bg_login_header"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:letterSpacing="0.05" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/tagline"
+                    android:textSize="14sp"
+                    android:textColor="#B2FFFFFF"
+                    android:letterSpacing="0.1" />
+            </LinearLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_signup"
-            android:textSize="32sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/primary"
-            android:layout_marginTop="48dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="28dp"
+            app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -27,8 +65,9 @@
             android:id="@+id/email_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="28dp"
+            style="@style/Widget.DinkLog.TextInput"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -45,8 +84,9 @@
             android:id="@+id/name_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="14dp"
+            android:layout_marginHorizontal="28dp"
+            style="@style/Widget.DinkLog.TextInput"
             app:layout_constraintTop_toBottomOf="@id/email_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -63,8 +103,9 @@
             android:id="@+id/password_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="14dp"
+            android:layout_marginHorizontal="28dp"
+            style="@style/Widget.DinkLog.TextInput"
             app:passwordToggleEnabled="true"
             app:layout_constraintTop_toBottomOf="@id/name_layout"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,8 +123,9 @@
             android:id="@+id/confirm_password_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="14dp"
+            android:layout_marginHorizontal="28dp"
+            style="@style/Widget.DinkLog.TextInput"
             app:passwordToggleEnabled="true"
             app:layout_constraintTop_toBottomOf="@id/password_layout"
             app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +144,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:layout_marginHorizontal="28dp"
             android:text="@string/btn_signup"
+            style="@style/Widget.DinkLog.Button"
             app:layout_constraintTop_toBottomOf="@id/confirm_password_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -112,8 +156,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
             android:text="@string/btn_login_link"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            style="@style/Widget.DinkLog.Button.Text"
             app:layout_constraintTop_toBottomOf="@id/signup_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -123,6 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:indeterminateTint="@color/primary"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
