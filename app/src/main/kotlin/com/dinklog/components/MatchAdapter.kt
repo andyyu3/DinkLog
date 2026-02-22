@@ -1,6 +1,5 @@
 package com.dinklog.components
 
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -23,17 +22,10 @@ class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffC
             binding.dateLocation.text = "${match.matchDate.formatMatchDate()} · ${match.locationName}"
 
             val badge = binding.resultBadge
-            val color = if (match.isWin) {
-                badge.context.getColor(R.color.win_green)
-            } else {
-                badge.context.getColor(R.color.loss_red)
-            }
             badge.text = if (match.isWin) "W" else "L"
-            val bg = GradientDrawable().apply {
-                shape = GradientDrawable.OVAL
-                setColor(color)
-            }
-            badge.background = bg
+            badge.setBackgroundResource(
+                if (match.isWin) R.drawable.bg_win_badge else R.drawable.bg_loss_badge
+            )
         }
 
         private fun buildOpponentText(match: Match): String {
