@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1B5E20</color>
-    <color name="secondary">#4CAF50</color>
+    <!-- Primary palette — teal-green, fresh and athletic -->
+    <color name="primary">#0D7C66</color>
+    <color name="primary_dark">#065A4A</color>
+    <color name="primary_light">#4DB6A0</color>
+    <color name="on_primary">#FFFFFF</color>
+
+    <!-- Accent — pickleball orange (the ball IS orange) -->
+    <color name="accent">#FF6D00</color>
+    <color name="accent_light">#FF9E40</color>
+
+    <!-- Surfaces -->
+    <color name="surface">#F6FAF8</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="surface_elevated">#FFFFFF</color>
+
+    <!-- Win / Loss -->
+    <color name="win_green">#1DB954</color>
+    <color name="win_green_surface">#E8F5E9</color>
+    <color name="loss_red">#E53935</color>
+    <color name="loss_red_surface">#FFEBEE</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1A2E28</color>
+    <color name="text_secondary">#607D72</color>
+    <color name="text_on_dark">#FFFFFF</color>
+    <color name="text_hint">#90A4A0</color>
+
+    <!-- Utility -->
+    <color name="divider">#E0E8E5</color>
     <color name="white">#FFFFFF</color>
-    <color name="win_green">#2E7D32</color>
-    <color name="loss_red">#C62828</color>
-    <color name="light_gray">#F5F5F5</color>
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
+    <color name="black">#000000</color>
+    <color name="ripple_light">#20000000</color>
+
+    <!-- Login gradient -->
+    <color name="gradient_start">#0D7C66</color>
+    <color name="gradient_end">#065A4A</color>
+
 </resources>
