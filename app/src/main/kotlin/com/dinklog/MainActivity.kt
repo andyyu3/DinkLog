@@ -48,6 +48,15 @@ class MainActivity : AppCompatActivity() {
             )
             binding.bottomNav.visibility = if (showBottomNav) View.VISIBLE else View.GONE
         }
+
+        // Ensure initial bottom navigation visibility matches the current destination
+        navController.currentDestination?.let { destination ->
+            val showBottomNav = destination.id in setOf(
+                R.id.historyFragment,
+                R.id.statsFragment
+            )
+            binding.bottomNav.visibility = if (showBottomNav) View.VISIBLE else View.GONE
+        }
     }
 
     override fun onStart() {
