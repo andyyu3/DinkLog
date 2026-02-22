@@ -1,0 +1,36 @@
+package com.dinklog.models
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.dinklog.utils.DatabaseConstants
+
+@Database(
+    entities = [User::class, Match::class],
+    version = DatabaseConstants.DATABASE_VERSION,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+
+    abstract fun userDao(): UserDao
+    abstract fun matchDao(): MatchDao
+
+    companion object {
+
+        @Volatile
+        private var instance: AppDatabase? = null
+
+        fun getInstance(context: Context): AppDatabase =
+            instance ?: synchronized(this) {
+                instance ?: buildDatabase(context).also { instance = it }
+            }
+
+        private fun buildDatabase(context: Context): AppDatabase =
+            Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java,
+                DatabaseConstants.DATABASE_NAME
+            ).build()
+    }
+}
