@@ -5,9 +5,12 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
+private val MATCH_DATE_FORMATTER = SimpleDateFormat("MMM dd, yyyy", Locale.US)
+
 fun Long.formatMatchDate(): String {
-    val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.US)
-    return formatter.format(Date(this))
+    return synchronized(MATCH_DATE_FORMATTER) {
+        MATCH_DATE_FORMATTER.format(Date(this))
+    }
 }
 
 fun Long.formatRelativeTime(): String {
