@@ -18,7 +18,7 @@ class PreferencesManager(context: Context) {
     }
 
     fun clearSession() {
-        prefs.edit().clear().apply()
+        prefs.edit().remove(KEY_USER_ID).apply()
     }
 
     companion object {
