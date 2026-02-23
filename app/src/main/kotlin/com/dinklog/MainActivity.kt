@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        binding.bottomNav.setupWithNavController(navController)
-
         val prefs = PreferencesManager(this)
         val startDestination = if (prefs.getUserId() != null) {
             R.id.historyFragment
@@ -40,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
         navGraph.setStartDestination(startDestination)
         navController.graph = navGraph
+
+        binding.bottomNav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val showBottomNav = destination.id in setOf(
