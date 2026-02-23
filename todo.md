@@ -76,8 +76,12 @@
 - [ ] **FT-2: Google Places API integration** — Use Places API to convert GPS coordinates to named locations (e.g., "Jesse Owens North"). Show nearby courts as suggestions.
 - [ ] **FT-3: Weather API integration** — Fetch wind/weather conditions at match time and location. Store as optional match metadata.
 - [ ] **FT-4: Map visualization** — Google Maps showing where user has played over time. Tap a pin to see matches at that location.
-- [ ] **FT-5: Logout functionality** — Clear PreferencesManager session, navigate back to Login screen.
+- [ ] **FT-5: Sign out** — Add sign-out button (toolbar menu or settings). Clear PreferencesManager session, navigate back to Login screen, clear the back stack so user can't press Back into the app.
 - [ ] **FT-6: Delete match** — Swipe-to-delete on History list with confirmation dialog.
-- [ ] **FT-7: Advanced analytics** — Performance trends over time, win rate by partner, win rate by location. Charts using a library like MPAndroidChart.
-- [ ] **FT-8: Cloud backup** — Firebase sync for multi-device support.
-- [ ] **FT-9: Export data** — Export match history to CSV or PDF.
+- [ ] **FT-7: Match detail screen** — Tap a match in History to view full details: all players, scores, location, notes, date. Allow editing or deleting from the detail view.
+- [ ] **FT-8: Stats — played-with breakdown** — Show a list of partners/opponents you've played with most, win rate per partner, win rate against specific opponents.
+- [ ] **FT-9: Stats — filter by location and date** — Add filter controls to Stats screen: filter by location (dropdown of locations you've played at), date range picker. Update stats dynamically based on filters.
+- [ ] **FT-10: Homepage / dashboard** — Consider a dedicated home screen as the main landing page. Show a quick summary (recent matches, current streak, win rate trend), quick-action buttons (log match, view stats), and a greeting with the user's name.
+- [ ] **FT-11: Advanced analytics** — Performance trends over time, win rate charts, streaks. Charts using a library like MPAndroidChart.
+- [ ] **FT-12: Cloud backup** — Firebase sync for multi-device support.
+- [ ] **FT-13: Export data** — Export match history to CSV or PDF.
