@@ -6,7 +6,7 @@
     <application
         android:name=".DinkLogApp"
         android:allowBackup="true"
-        android:label="DinkLog"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.DinkLog">
 
