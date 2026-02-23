@@ -48,8 +48,8 @@ class UserRepository(private val userDao: UserDao) {
     private fun verifyPassword(password: String, stored: String): Boolean {
         val parts = stored.split(SEPARATOR)
         if (parts.size != 2) return false
-        val salt = parts[0].hexToBytes()
-        val expectedHash = parts[1].hexToBytes()
+        val salt = runCatching { parts[0].hexToBytes() }.getOrElse { return false }
+        val expectedHash = runCatching { parts[1].hexToBytes() }.getOrElse { return false }
         val actualHash = pbkdf2(password, salt)
         return actualHash.contentEquals(expectedHash)
     }
