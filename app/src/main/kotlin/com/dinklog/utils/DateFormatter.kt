@@ -20,6 +20,7 @@ fun Long.formatRelativeTime(): String {
     val days = TimeUnit.MILLISECONDS.toDays(diff)
 
     return when {
+        diff < 0L -> formatMatchDate()
         days == 0L -> "Today"
         days == 1L -> "Yesterday"
         days < 7L -> "$days days ago"
