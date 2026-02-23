@@ -20,6 +20,15 @@
     <string name="btn_signup">Sign Up</string>
     <string name="btn_login_link">Already have an account? Log In</string>
 
+    <!-- Match display -->
+    <string name="match_result_win">W</string>
+    <string name="match_result_loss">L</string>
+    <string name="match_score_format">%1$d - %2$d</string>
+    <string name="match_date_location_format">%1$s · %2$s</string>
+    <string name="match_vs_format">vs %1$s</string>
+    <string name="match_vs_with_partner_format">vs %1$s w/ %2$s</string>
+    <string name="match_opponents_separator">" &amp; "</string>
+
     <!-- History -->
     <string name="cd_add_match">Add match</string>
     <string name="empty_history_title">No matches yet</string>

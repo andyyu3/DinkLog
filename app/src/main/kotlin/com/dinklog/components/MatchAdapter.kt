@@ -17,22 +17,37 @@ class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffC
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(match: Match) {
-            binding.score.text = "${match.teamScore} - ${match.opponentScore}"
+            val context = binding.root.context
+
+            binding.score.text = context.getString(
+                R.string.match_score_format, match.teamScore, match.opponentScore
+            )
             binding.opponents.text = buildOpponentText(match)
-            binding.dateLocation.text = "${match.matchDate.formatMatchDate()} · ${match.locationName}"
+            binding.dateLocation.text = context.getString(
+                R.string.match_date_location_format,
+                match.matchDate.formatMatchDate(),
+                match.locationName
+            )
 
             val badge = binding.resultBadge
-            badge.text = if (match.isWin) "W" else "L"
+            badge.text = context.getString(
+                if (match.isWin) R.string.match_result_win else R.string.match_result_loss
+            )
             badge.setBackgroundResource(
                 if (match.isWin) R.drawable.bg_win_badge else R.drawable.bg_loss_badge
             )
         }
 
         private fun buildOpponentText(match: Match): String {
+            val context = binding.root.context
+            val separator = context.getString(R.string.match_opponents_separator)
             val opponents = listOfNotNull(match.opponent1Name, match.opponent2Name)
-                .joinToString(" & ")
-            val partner = match.partnerName?.let { "w/ $it" } ?: ""
-            return if (partner.isNotBlank()) "vs $opponents $partner" else "vs $opponents"
+                .joinToString(separator)
+            return if (match.partnerName != null) {
+                context.getString(R.string.match_vs_with_partner_format, opponents, match.partnerName)
+            } else {
+                context.getString(R.string.match_vs_format, opponents)
+            }
         }
     }
 
