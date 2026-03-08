@@ -12,10 +12,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.dinklog.R
 import com.dinklog.components.MatchAdapter
 import com.dinklog.databinding.FragmentHistoryBinding
 import com.dinklog.utils.PreferencesManager
+import com.dinklog.components.SwipeToDeleteCallback
+import com.dinklog.models.Match
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class History : Fragment() {
@@ -44,6 +48,7 @@ class History : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        setupSwipeToDelete()
         setupClickListeners()
         observeMatches()
         loadData()
@@ -54,6 +59,21 @@ class History : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = matchAdapter
         }
+    }
+
+    private fun setupSwipeToDelete() {
+        val callback = SwipeToDeleteCallback(requireContext()) { position ->
+            val match = matchAdapter.currentList[position]
+            viewModel.deleteMatch(match)
+            showUndoSnackbar(match)
+        }
+        ItemTouchHelper(callback).attachToRecyclerView(binding.matchesList)
+    }
+
+    private fun showUndoSnackbar(deletedMatch: Match) {
+        Snackbar.make(binding.root, R.string.match_deleted, Snackbar.LENGTH_LONG)
+            .setAction(R.string.action_undo) { viewModel.undoDelete(deletedMatch) }
+            .show()
     }
 
     private fun setupClickListeners() {

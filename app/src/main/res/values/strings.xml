@@ -33,6 +33,8 @@
     <string name="cd_add_match">Add match</string>
     <string name="empty_history_title">No matches yet</string>
     <string name="empty_history_subtitle">Tap + to log your first match</string>
+    <string name="match_deleted">Match deleted</string>
+    <string name="action_undo">Undo</string>
 
     <!-- Add Match -->
     <string name="title_add_match">Log Match</string>
