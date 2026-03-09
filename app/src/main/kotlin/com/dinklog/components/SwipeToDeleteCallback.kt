@@ -52,6 +52,9 @@ class SwipeToDeleteCallback(
     }
 
     private fun drawBackground(canvas: Canvas, itemView: View, dX: Float) {
+        val swipedFully = dX == 0f
+        if (swipedFully) return
+
         background.setBounds(
             itemView.right + dX.toInt(),
             itemView.top,
