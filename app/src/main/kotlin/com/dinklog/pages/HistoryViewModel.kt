@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistoryViewModel : ViewModel() {
@@ -29,5 +30,26 @@ class HistoryViewModel : ViewModel() {
 
     fun loadMatches(userId: Long) {
         _userId.value = userId
+    }
+
+    fun deleteMatch(match: Match) {
+        viewModelScope.launch {
+            matchRepository.deleteMatch(match)
+        }
+    }
+
+    fun undoDelete(match: Match) {
+        viewModelScope.launch {
+            matchRepository.addMatch(
+                userId = match.userId,
+                opponent1Name = match.opponent1Name,
+                opponent2Name = match.opponent2Name,
+                partnerName = match.partnerName,
+                teamScore = match.teamScore,
+                opponentScore = match.opponentScore,
+                locationName = match.locationName,
+                notes = match.notes
+            )
+        }
     }
 }
