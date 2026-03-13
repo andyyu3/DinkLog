@@ -2,6 +2,8 @@ package com.dinklog.repositories
 
 import com.dinklog.models.User
 import com.dinklog.models.UserDao
+import com.dinklog.utils.CryptoConstants
+import com.dinklog.utils.ValidationMessages
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.SecureRandom
@@ -13,10 +15,10 @@ class UserRepository(private val userDao: UserDao) {
     suspend fun login(email: String, password: String): Result<User> =
         withContext(Dispatchers.IO) {
             val user = userDao.findByEmail(email)
-                ?: return@withContext Result.failure(Exception("No account found with that email"))
+                ?: return@withContext Result.failure(Exception(ValidationMessages.NO_ACCOUNT))
 
             if (!verifyPassword(password, user.passwordHash)) {
-                return@withContext Result.failure(Exception("Incorrect password"))
+                return@withContext Result.failure(Exception(ValidationMessages.INCORRECT_PASSWORD))
             }
 
             Result.success(user)
@@ -25,7 +27,7 @@ class UserRepository(private val userDao: UserDao) {
     suspend fun signup(email: String, name: String, password: String): Result<User> =
         withContext(Dispatchers.IO) {
             if (userDao.emailExists(email)) {
-                return@withContext Result.failure(Exception("Email already in use"))
+                return@withContext Result.failure(Exception(ValidationMessages.EMAIL_IN_USE))
             }
 
             val user = User(
@@ -39,14 +41,14 @@ class UserRepository(private val userDao: UserDao) {
         }
 
     private fun hashPassword(password: String): String {
-        val salt = ByteArray(SALT_LENGTH)
+        val salt = ByteArray(CryptoConstants.SALT_LENGTH)
         SecureRandom().nextBytes(salt)
         val hash = pbkdf2(password, salt)
-        return salt.toHex() + SEPARATOR + hash.toHex()
+        return salt.toHex() + CryptoConstants.SEPARATOR + hash.toHex()
     }
 
     private fun verifyPassword(password: String, stored: String): Boolean {
-        val parts = stored.split(SEPARATOR)
+        val parts = stored.split(CryptoConstants.SEPARATOR)
         if (parts.size != 2) return false
         val salt = runCatching { parts[0].hexToBytes() }.getOrElse { return false }
         val expectedHash = runCatching { parts[1].hexToBytes() }.getOrElse { return false }
@@ -55,8 +57,13 @@ class UserRepository(private val userDao: UserDao) {
     }
 
     private fun pbkdf2(password: String, salt: ByteArray): ByteArray {
-        val spec = PBEKeySpec(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH)
-        val factory = SecretKeyFactory.getInstance(ALGORITHM)
+        val spec = PBEKeySpec(
+            password.toCharArray(),
+            salt,
+            CryptoConstants.ITERATIONS,
+            CryptoConstants.KEY_LENGTH
+        )
+        val factory = SecretKeyFactory.getInstance(CryptoConstants.ALGORITHM)
         return factory.generateSecret(spec).encoded
     }
 
@@ -65,12 +72,4 @@ class UserRepository(private val userDao: UserDao) {
 
     private fun String.hexToBytes(): ByteArray =
         chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-
-    companion object {
-        private const val ALGORITHM = "PBKDF2WithHmacSHA256"
-        private const val ITERATIONS = 120_000
-        private const val KEY_LENGTH = 256
-        private const val SALT_LENGTH = 16
-        private const val SEPARATOR = ":"
-    }
 }

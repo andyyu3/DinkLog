@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.dinklog.databinding.FragmentStatsBinding
-import com.dinklog.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
 class Stats : Fragment() {
@@ -23,7 +22,7 @@ class Stats : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
+        Log.d(LOG_TAG, "Stats: onCreate")
     }
 
     override fun onCreateView(
@@ -31,13 +30,14 @@ class Stats : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d(TAG, "onCreateView")
+        Log.d(LOG_TAG, "Stats: onCreateView")
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(LOG_TAG, "Stats: onViewCreated")
         observeStats()
         loadData()
     }
@@ -62,42 +62,41 @@ class Stats : Fragment() {
     }
 
     private fun loadData() {
-        val userId = PreferencesManager(requireContext()).getUserId() ?: return
-        viewModel.loadStats(userId)
+        viewModel.loadStats()
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart")
+        Log.d(LOG_TAG, "Stats: onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume")
+        Log.d(LOG_TAG, "Stats: onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause")
+        Log.d(LOG_TAG, "Stats: onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop")
+        Log.d(LOG_TAG, "Stats: onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
+        Log.d(LOG_TAG, "Stats: onDestroyView")
         _binding = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy")
+        Log.d(LOG_TAG, "Stats: onDestroy")
     }
 
     companion object {
-        private const val TAG = "StatsFragment"
+        private const val LOG_TAG = "DinkLog"
     }
 }

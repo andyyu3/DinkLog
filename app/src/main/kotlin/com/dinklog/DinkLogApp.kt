@@ -16,7 +16,8 @@ class DinkLogApp : Application() {
 
     companion object {
         private const val TAG = "DinkLogApp"
-        private lateinit var instance: DinkLogApp
+        lateinit var instance: DinkLogApp
+            private set
 
         fun getDatabase(): AppDatabase = instance.database
     }

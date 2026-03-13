@@ -36,6 +36,16 @@ class MatchRepository(private val matchDao: MatchDao) {
         Result.success(match.copy(matchId = matchId))
     }
 
+    suspend fun getMatchById(matchId: Long): Match? = withContext(Dispatchers.IO) {
+        matchDao.getMatchById(matchId)
+    }
+
+    suspend fun updateMatch(match: Match): Result<Unit> = withContext(Dispatchers.IO) {
+        val updated = match.copy(isWin = match.teamScore > match.opponentScore)
+        matchDao.update(updated)
+        Result.success(Unit)
+    }
+
     suspend fun deleteMatch(match: Match) = withContext(Dispatchers.IO) {
         matchDao.delete(match)
     }

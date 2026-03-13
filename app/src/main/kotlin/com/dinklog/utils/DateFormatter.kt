@@ -23,8 +23,8 @@ fun Long.formatRelativeTime(): String {
 
     return when {
         diff < 0L -> formatMatchDate()
-        days == 0L -> "Today"
-        days == 1L -> "Yesterday"
+        days == 0L -> DateMessages.TODAY
+        days == 1L -> DateMessages.YESTERDAY
         days < 7L -> "$days days ago"
         days < 30L -> "${days / 7} weeks ago"
         days < 365L -> "${days / 30} months ago"

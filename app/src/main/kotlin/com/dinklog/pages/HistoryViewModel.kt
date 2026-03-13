@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.dinklog.DinkLogApp
 import com.dinklog.models.Match
 import com.dinklog.repositories.MatchRepository
+import com.dinklog.utils.PreferencesManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,8 +19,9 @@ import kotlinx.coroutines.launch
 class HistoryViewModel : ViewModel() {
 
     private val matchRepository = MatchRepository(DinkLogApp.getDatabase().matchDao())
+    private val preferencesManager = PreferencesManager(DinkLogApp.instance)
 
-    private val _userId = MutableStateFlow<Long?>(null)
+    private val _userId = MutableStateFlow(preferencesManager.getUserId())
 
     val matches: StateFlow<List<Match>> = _userId
         .flatMapLatest { userId ->
@@ -28,8 +30,8 @@ class HistoryViewModel : ViewModel() {
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun loadMatches(userId: Long) {
-        _userId.value = userId
+    fun loadMatches() {
+        _userId.value = preferencesManager.getUserId()
     }
 
     fun deleteMatch(match: Match) {

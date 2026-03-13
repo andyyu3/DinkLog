@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.dinklog.R
 import com.dinklog.databinding.FragmentSignupBinding
-import com.dinklog.utils.PreferencesManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -26,7 +25,7 @@ class Signup : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
+        Log.d(LOG_TAG, "Signup: onCreate")
     }
 
     override fun onCreateView(
@@ -34,13 +33,14 @@ class Signup : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d(TAG, "onCreateView")
+        Log.d(LOG_TAG, "Signup: onCreateView")
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(LOG_TAG, "Signup: onViewCreated")
         setupClickListeners()
         observeState()
     }
@@ -77,7 +77,6 @@ class Signup : Fragment() {
 
     private fun handleSignupSuccess(state: SignupState.Success) {
         binding.loading.visibility = View.GONE
-        PreferencesManager(requireContext()).saveUserId(state.user.userId)
         findNavController().navigate(R.id.action_signup_to_history)
     }
 
@@ -89,36 +88,36 @@ class Signup : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart")
+        Log.d(LOG_TAG, "Signup: onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume")
+        Log.d(LOG_TAG, "Signup: onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause")
+        Log.d(LOG_TAG, "Signup: onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop")
+        Log.d(LOG_TAG, "Signup: onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
+        Log.d(LOG_TAG, "Signup: onDestroyView")
         _binding = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy")
+        Log.d(LOG_TAG, "Signup: onDestroy")
     }
 
     companion object {
-        private const val TAG = "SignupFragment"
+        private const val LOG_TAG = "DinkLog"
     }
 }

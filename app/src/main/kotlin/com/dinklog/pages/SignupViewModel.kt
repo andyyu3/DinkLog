@@ -5,6 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.dinklog.DinkLogApp
 import com.dinklog.models.User
 import com.dinklog.repositories.UserRepository
+import com.dinklog.utils.PreferencesManager
+import com.dinklog.utils.ValidationConstants
+import com.dinklog.utils.ValidationMessages
 import com.dinklog.utils.isValidEmail
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +16,7 @@ import kotlinx.coroutines.launch
 class SignupViewModel : ViewModel() {
 
     private val userRepository = UserRepository(DinkLogApp.getDatabase().userDao())
+    private val preferencesManager = PreferencesManager(DinkLogApp.instance)
 
     private val _state = MutableStateFlow<SignupState>(SignupState.Idle)
     val state: StateFlow<SignupState> = _state
@@ -27,8 +31,13 @@ class SignupViewModel : ViewModel() {
         _state.value = SignupState.Loading
         viewModelScope.launch {
             userRepository.signup(email.trim(), name.trim(), password)
-                .onSuccess { user -> _state.value = SignupState.Success(user) }
-                .onFailure { error -> _state.value = SignupState.Error(error.message ?: "Signup failed") }
+                .onSuccess { user ->
+                    preferencesManager.saveUserId(user.userId)
+                    _state.value = SignupState.Success(user)
+                }
+                .onFailure { error ->
+                    _state.value = SignupState.Error(error.message ?: ValidationMessages.SIGNUP_FAILED)
+                }
         }
     }
 
@@ -38,10 +47,10 @@ class SignupViewModel : ViewModel() {
         password: String,
         confirmPassword: String
     ): String? = when {
-        email.isBlank() || name.isBlank() || password.isBlank() -> "Please fill in all fields"
-        !email.isValidEmail() -> "Please enter a valid email"
-        password.length < 6 -> "Password must be at least 6 characters"
-        password != confirmPassword -> "Passwords do not match"
+        email.isBlank() || name.isBlank() || password.isBlank() -> ValidationMessages.FIELDS_REQUIRED
+        !email.isValidEmail() -> ValidationMessages.INVALID_EMAIL
+        password.length < ValidationConstants.MIN_PASSWORD_LENGTH -> ValidationMessages.PASSWORD_TOO_SHORT
+        password != confirmPassword -> ValidationMessages.PASSWORDS_NO_MATCH
         else -> null
     }
 
