@@ -10,7 +10,10 @@ import com.dinklog.databinding.ItemMatchBinding
 import com.dinklog.models.Match
 import com.dinklog.utils.formatMatchDate
 
-class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffCallback) {
+// ADDED: click callback so HistoryFragment can navigate to edit screen
+class MatchAdapter(
+    private val onMatchClick: (Long) -> Unit
+) : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffCallback) {
 
     class MatchViewHolder(
         private val binding: ItemMatchBinding
@@ -59,7 +62,10 @@ class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffC
     }
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val match = getItem(position)
+        holder.bind(match)
+        // ADDED: navigate to edit screen on row tap
+        holder.itemView.setOnClickListener { onMatchClick(match.matchId) }
     }
 }
 

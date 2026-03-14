@@ -10,13 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.dinklog.R
 import com.dinklog.components.MatchAdapter
 import com.dinklog.databinding.FragmentHistoryBinding
-import com.dinklog.utils.PreferencesManager
 import com.dinklog.components.SwipeToDeleteCallback
 import com.dinklog.models.Match
 import com.google.android.material.snackbar.Snackbar
@@ -28,11 +28,17 @@ class History : Fragment() {
     private val binding get() = _binding ?: error("Binding accessed after onDestroyView")
 
     private val viewModel: HistoryViewModel by viewModels()
-    private val matchAdapter = MatchAdapter()
+    // ADDED: pass click handler to navigate to AddMatch in edit mode
+    private val matchAdapter = MatchAdapter(onMatchClick = { matchId ->
+        findNavController().navigate(
+            R.id.action_history_to_addMatch,
+            bundleOf("matchId" to matchId)
+        )
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
+        Log.d(LOG_TAG, "History: onCreate")
     }
 
     override fun onCreateView(
@@ -40,13 +46,14 @@ class History : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d(TAG, "onCreateView")
+        Log.d(LOG_TAG, "History: onCreateView")
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(LOG_TAG, "History: onViewCreated")
         setupRecyclerView()
         setupSwipeToDelete()
         setupClickListeners()
@@ -95,42 +102,41 @@ class History : Fragment() {
     }
 
     private fun loadData() {
-        val userId = PreferencesManager(requireContext()).getUserId() ?: return
-        viewModel.loadMatches(userId)
+        viewModel.loadMatches()
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart")
+        Log.d(LOG_TAG, "History: onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume")
+        Log.d(LOG_TAG, "History: onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause")
+        Log.d(LOG_TAG, "History: onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop")
+        Log.d(LOG_TAG, "History: onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
+        Log.d(LOG_TAG, "History: onDestroyView")
         _binding = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy")
+        Log.d(LOG_TAG, "History: onDestroy")
     }
 
     companion object {
-        private const val TAG = "HistoryFragment"
+        private const val LOG_TAG = "DinkLog"
     }
 }

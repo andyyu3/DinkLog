@@ -55,7 +55,13 @@
         android:id="@+id/addMatchFragment"
         android:name="com.dinklog.pages.AddMatch"
         android:label="Log Match"
-        tools:layout="@layout/fragment_add_match" />
+        tools:layout="@layout/fragment_add_match">
+
+        <argument
+            android:name="matchId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
 
     <!-- Stats Screen -->
     <fragment

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.dinklog.utils.MatchColumns
 import kotlinx.coroutines.flow.Flow
 
@@ -12,6 +13,9 @@ interface MatchDao {
 
     @Insert
     suspend fun insert(match: Match): Long
+
+    @Update
+    suspend fun update(match: Match)
 
     @Delete
     suspend fun delete(match: Match)
@@ -22,6 +26,12 @@ interface MatchDao {
             "ORDER BY ${MatchColumns.DATE} DESC"
     )
     fun getMatchesByUser(userId: Long): Flow<List<Match>>
+
+    @Query(
+        "SELECT * FROM ${MatchColumns.TABLE_NAME} " +
+            "WHERE ${MatchColumns.ID} = :matchId LIMIT 1"
+    )
+    suspend fun getMatchById(matchId: Long): Match?
 
     @Query("SELECT COUNT(*) FROM ${MatchColumns.TABLE_NAME} WHERE ${MatchColumns.USER_ID} = :userId")
     suspend fun getTotalMatches(userId: Long): Int

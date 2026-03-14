@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.dinklog.R
 import com.dinklog.databinding.FragmentLoginBinding
-import com.dinklog.utils.PreferencesManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -26,7 +25,7 @@ class Login : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
+        Log.d(LOG_TAG, "Login: onCreate")
     }
 
     override fun onCreateView(
@@ -34,13 +33,14 @@ class Login : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d(TAG, "onCreateView")
+        Log.d(LOG_TAG, "Login: onCreateView")
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(LOG_TAG, "Login: onViewCreated")
         setupClickListeners()
         observeState()
     }
@@ -75,7 +75,6 @@ class Login : Fragment() {
 
     private fun handleLoginSuccess(state: LoginState.Success) {
         binding.loading.visibility = View.GONE
-        PreferencesManager(requireContext()).saveUserId(state.user.userId)
         findNavController().navigate(R.id.action_login_to_history)
     }
 
@@ -87,36 +86,36 @@ class Login : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart")
+        Log.d(LOG_TAG, "Login: onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume")
+        Log.d(LOG_TAG, "Login: onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause")
+        Log.d(LOG_TAG, "Login: onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop")
+        Log.d(LOG_TAG, "Login: onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
+        Log.d(LOG_TAG, "Login: onDestroyView")
         _binding = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy")
+        Log.d(LOG_TAG, "Login: onDestroy")
     }
 
     companion object {
-        private const val TAG = "LoginFragment"
+        private const val LOG_TAG = "DinkLog"
     }
 }

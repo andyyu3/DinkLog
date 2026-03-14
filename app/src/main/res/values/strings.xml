@@ -38,6 +38,8 @@
 
     <!-- Add Match -->
     <string name="title_add_match">Log Match</string>
+    <string name="title_edit_match">Edit Match</string>
+    <string name="btn_update_match">Update Match</string>
     <string name="section_players">PLAYERS</string>
     <string name="section_score">SCORE</string>
     <string name="section_details">DETAILS</string>
