@@ -46,19 +46,21 @@ class MatchRepository(private val matchDao: MatchDao) {
         Result.success(Unit)
     }
 
-    suspend fun deleteMatch(match: Match) = withContext(Dispatchers.IO) {
-        matchDao.delete(match)
+    suspend fun deleteMatch(match: Match): Result<Unit> = withContext(Dispatchers.IO) {
+        runCatching { matchDao.delete(match) }
     }
 
-    suspend fun getStats(userId: Long): MatchStats = withContext(Dispatchers.IO) {
-        val total = matchDao.getTotalMatches(userId)
-        val wins = matchDao.getWinCount(userId)
-        val losses = matchDao.getLossCount(userId)
-        MatchStats(
-            totalMatches = total,
-            wins = wins,
-            losses = losses
-        )
+    suspend fun getStats(userId: Long): Result<MatchStats> = withContext(Dispatchers.IO) {
+        runCatching {
+            val total = matchDao.getTotalMatches(userId)
+            val wins = matchDao.getWinCount(userId)
+            val losses = matchDao.getLossCount(userId)
+            MatchStats(
+                totalMatches = total,
+                wins = wins,
+                losses = losses
+            )
+        }
     }
 }
 

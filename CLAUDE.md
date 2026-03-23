@@ -20,6 +20,8 @@ Standard Android Gradle project. Kotlin 1.9.22, JDK 17, targeting API 36, minimu
 ./gradlew clean                  # Clean build
 ```
 
+On Windows use `gradlew.bat` or run `./gradlew` from Git Bash.
+
 Entry point is `MainActivity`, which starts at `loginFragment` unless a saved session exists in `PreferencesManager`, in which case it starts at `historyFragment`.
 
 **Note:** No unit tests exist yet — the `test` directory is empty.
@@ -42,6 +44,8 @@ Fragment (View) --> ViewModel --> Repository --> DAO --> Room/SQLite
 
 State is exposed as sealed classes (e.g., `LoginState` with `Idle / Loading / Success / Error`). Fragments observe with `repeatOnLifecycle(Lifecycle.State.STARTED)`.
 
+All fragments use **ViewBinding** with the `_binding` / safe-getter pattern (`private var _binding: FragmentXBinding? = null` + `val binding get() = _binding ?: error(...)`).
+
 ## Key Source Locations
 
 ```
@@ -62,7 +66,7 @@ app/src/main/kotlin/com/dinklog/
 ```
 
 Navigation graph: `app/src/main/res/navigation/nav_graph.xml`
-Flows: Login/Signup -> History (auth removes login from back stack); History -> AddMatch; bottom nav between History and Stats.
+Flows: Login/Signup -> History (auth removes login from back stack); History -> AddMatch; bottom nav between History and Stats. `AddMatch` doubles as the edit screen — it receives a `matchId` argument (`-1L` = new match).
 
 ## Coding Rules (from `app/kotlin-rules.md`)
 

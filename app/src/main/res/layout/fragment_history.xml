@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/surface">
 
     <androidx.appcompat.widget.Toolbar
@@ -12,6 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_toolbar"
         android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/app_name"
         app:titleTextColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"

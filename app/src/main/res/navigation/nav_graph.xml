@@ -6,6 +6,13 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- Global action: logout from any screen -->
+    <action
+        android:id="@+id/action_global_logout"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
     <!-- Login Screen -->
     <fragment
         android:id="@+id/loginFragment"

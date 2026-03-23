@@ -35,6 +35,7 @@
     <string name="empty_history_subtitle">Tap + to log your first match</string>
     <string name="match_deleted">Match deleted</string>
     <string name="action_undo">Undo</string>
+    <string name="action_logout">Log Out</string>
 
     <!-- Add Match -->
     <string name="title_add_match">Log Match</string>

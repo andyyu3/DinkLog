@@ -14,11 +14,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.dinklog.DinkLogApp
 import com.dinklog.R
 import com.dinklog.components.MatchAdapter
 import com.dinklog.databinding.FragmentHistoryBinding
 import com.dinklog.components.SwipeToDeleteCallback
 import com.dinklog.models.Match
+import com.dinklog.utils.PreferencesManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -54,11 +56,27 @@ class History : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(LOG_TAG, "History: onViewCreated")
+        setupToolbar()
         setupRecyclerView()
         setupSwipeToDelete()
         setupClickListeners()
         observeMatches()
         loadData()
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.inflateMenu(R.menu.toolbar_menu)
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_logout -> { logout(); true }
+                else -> false
+            }
+        }
+    }
+
+    private fun logout() {
+        PreferencesManager(DinkLogApp.instance).clearSession()
+        findNavController().navigate(R.id.action_global_logout)
     }
 
     private fun setupRecyclerView() {

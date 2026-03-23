@@ -10,7 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.dinklog.DinkLogApp
+import com.dinklog.R
 import com.dinklog.databinding.FragmentStatsBinding
+import com.dinklog.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
 class Stats : Fragment() {
@@ -38,8 +42,24 @@ class Stats : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(LOG_TAG, "Stats: onViewCreated")
+        setupToolbar()
         observeStats()
         loadData()
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.inflateMenu(R.menu.toolbar_menu)
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_logout -> { logout(); true }
+                else -> false
+            }
+        }
+    }
+
+    private fun logout() {
+        PreferencesManager(DinkLogApp.instance).clearSession()
+        findNavController().navigate(R.id.action_global_logout)
     }
 
     private fun observeStats() {
