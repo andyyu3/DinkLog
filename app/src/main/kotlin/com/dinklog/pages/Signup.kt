@@ -67,7 +67,7 @@ class Signup : Fragment() {
                     when (state) {
                         is SignupState.Idle -> binding.loading.visibility = View.GONE
                         is SignupState.Loading -> binding.loading.visibility = View.VISIBLE
-                        is SignupState.Success -> handleSignupSuccess(state)
+                        is SignupState.Success -> handleSignupSuccess()
                         is SignupState.Error -> handleSignupError(state.message)
                     }
                 }
@@ -75,7 +75,7 @@ class Signup : Fragment() {
         }
     }
 
-    private fun handleSignupSuccess(state: SignupState.Success) {
+    private fun handleSignupSuccess() {
         binding.loading.visibility = View.GONE
         findNavController().navigate(R.id.action_signup_to_history)
     }

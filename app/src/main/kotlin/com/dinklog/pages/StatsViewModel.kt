@@ -21,7 +21,9 @@ class StatsViewModel : ViewModel() {
     fun loadStats() {
         val userId = preferencesManager.getUserId() ?: return
         viewModelScope.launch {
-            _stats.value = matchRepository.getStats(userId)
+            matchRepository.getStats(userId)
+                .onSuccess { _stats.value = it }
+                .onFailure { _stats.value = null }
         }
     }
 }

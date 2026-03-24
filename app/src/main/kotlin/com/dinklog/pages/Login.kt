@@ -65,7 +65,7 @@ class Login : Fragment() {
                     when (state) {
                         is LoginState.Idle -> binding.loading.visibility = View.GONE
                         is LoginState.Loading -> binding.loading.visibility = View.VISIBLE
-                        is LoginState.Success -> handleLoginSuccess(state)
+                        is LoginState.Success -> handleLoginSuccess()
                         is LoginState.Error -> handleLoginError(state.message)
                     }
                 }
@@ -73,7 +73,7 @@ class Login : Fragment() {
         }
     }
 
-    private fun handleLoginSuccess(state: LoginState.Success) {
+    private fun handleLoginSuccess() {
         binding.loading.visibility = View.GONE
         findNavController().navigate(R.id.action_login_to_history)
     }

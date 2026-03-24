@@ -37,6 +37,7 @@ class HistoryViewModel : ViewModel() {
     fun deleteMatch(match: Match) {
         viewModelScope.launch {
             matchRepository.deleteMatch(match)
+                .onFailure { /* deletion failed silently; list will not update */ }
         }
     }
 
