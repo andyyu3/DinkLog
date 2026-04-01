@@ -1,10 +1,18 @@
 package com.dinklog.pages
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.annotation.SuppressLint
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,8 +22,15 @@ import androidx.navigation.fragment.findNavController
 import com.dinklog.R
 import com.dinklog.databinding.FragmentAddMatchBinding
 import com.dinklog.models.Match
+import com.dinklog.utils.LocationMessages
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class AddMatch : Fragment() {
 
@@ -29,6 +44,19 @@ class AddMatch : Fragment() {
     }
 
     private val isEditMode: Boolean get() = matchId != NEW_MATCH
+
+    private val fusedLocationClient by lazy {
+        LocationServices.getFusedLocationProviderClient(requireContext())
+    }
+
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true
+                   || permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        if (granted) fetchLocation()
+        else showLocationError(LocationMessages.PERMISSION_DENIED)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +79,7 @@ class AddMatch : Fragment() {
         setupEditMode()
         setupClickListeners()
         observeState()
+        if (!isEditMode) requestLocationPermissionAndFetch()
     }
 
     private fun setupEditMode() {
@@ -86,6 +115,63 @@ class AddMatch : Fragment() {
             if (isEditMode) submitEdit() else submitCreate()
         }
     }
+
+    private fun requestLocationPermissionAndFetch() {
+        val fine = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarse = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (fine == PackageManager.PERMISSION_GRANTED || coarse == PackageManager.PERMISSION_GRANTED) {
+            fetchLocation()
+        } else {
+            locationPermissionRequest.launch(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ))
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchLocation() {
+        val cts = CancellationTokenSource()
+        fusedLocationClient
+            .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.token)
+            .addOnSuccessListener { location ->
+                if (location != null) resolveAddress(location.latitude, location.longitude)
+                else showLocationError(LocationMessages.UNAVAILABLE)
+            }
+            .addOnFailureListener { showLocationError(LocationMessages.UNAVAILABLE) }
+    }
+
+    private fun resolveAddress(lat: Double, lng: Double) {
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            geocoder.getFromLocation(lat, lng, 1) { addresses ->
+                val name = addresses.firstOrNull()?.let { formatAddress(it) } ?: LocationMessages.UNAVAILABLE
+                _binding?.locationInput?.post { _binding?.locationInput?.setText(name) }
+            }
+        } else {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                @Suppress("DEPRECATION")
+                val addresses = geocoder.getFromLocation(lat, lng, 1)
+                val name = addresses?.firstOrNull()?.let { formatAddress(it) } ?: LocationMessages.UNAVAILABLE
+                withContext(Dispatchers.Main) { _binding?.locationInput?.post { _binding?.locationInput?.setText(name) } }
+            }
+        }
+    }
+
+    private fun formatAddress(address: Address): String {
+        val namedPlace = address.featureName
+            ?.takeIf { it.any(Char::isLetter) && it != address.thoroughfare }
+        val street = listOfNotNull(address.subThoroughfare, address.thoroughfare).joinToString(" ")
+        val parts = listOfNotNull(
+            namedPlace ?: street.ifBlank { null },
+            address.locality ?: address.subAdminArea,
+            address.adminArea
+        )
+        return parts.joinToString(", ").ifBlank { address.getAddressLine(0) ?: LocationMessages.UNAVAILABLE }
+    }
+
+    private fun showLocationError(message: String) =
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
 
     private fun submitCreate() {
         viewModel.saveMatch(
