@@ -65,3 +65,8 @@ object DateMessages {
     const val TODAY = "Today"
     const val YESTERDAY = "Yesterday"
 }
+
+object LocationMessages {
+    const val PERMISSION_DENIED = "Location access denied — please enter location manually"
+    const val UNAVAILABLE = "Could not detect location — please enter manually"
+}
