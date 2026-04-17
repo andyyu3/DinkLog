@@ -198,8 +198,10 @@ class AddMatch : Fragment() {
         return parts.joinToString(", ").ifBlank { address.getAddressLine(0) ?: LocationMessages.UNAVAILABLE }
     }
 
-    private fun showLocationError(message: String) =
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    private fun showLocationError(message: String) {
+        val root = _binding?.root ?: return
+        Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
+    }
 
     private fun submitCreate() {
         viewModel.saveMatch(
