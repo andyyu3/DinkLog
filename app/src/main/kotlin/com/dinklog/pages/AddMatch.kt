@@ -6,6 +6,8 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -132,28 +134,54 @@ class AddMatch : Fragment() {
     @SuppressLint("MissingPermission")
     private fun fetchLocation() {
         val cts = CancellationTokenSource()
+
+        val timeoutHandler = Handler(Looper.getMainLooper())
+        val timeoutRunnable = Runnable {
+            cts.cancel()
+            showLocationError(LocationMessages.UNAVAILABLE)
+        }
+        timeoutHandler.postDelayed(timeoutRunnable, LOCATION_TIMEOUT_MS)
+
         fusedLocationClient
             .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.token)
             .addOnSuccessListener { location ->
+                timeoutHandler.removeCallbacks(timeoutRunnable)
                 if (location != null) resolveAddress(location.latitude, location.longitude)
                 else showLocationError(LocationMessages.UNAVAILABLE)
             }
-            .addOnFailureListener { showLocationError(LocationMessages.UNAVAILABLE) }
+            .addOnFailureListener {
+                timeoutHandler.removeCallbacks(timeoutRunnable)
+                showLocationError(LocationMessages.UNAVAILABLE)
+            }
     }
 
     private fun resolveAddress(lat: Double, lng: Double) {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val geocodeHandler = Handler(Looper.getMainLooper())
+            val geocodeTimeout = Runnable { showLocationError(LocationMessages.UNAVAILABLE) }
+            geocodeHandler.postDelayed(geocodeTimeout, LOCATION_TIMEOUT_MS)
+
             geocoder.getFromLocation(lat, lng, 1) { addresses ->
-                val name = addresses.firstOrNull()?.let { formatAddress(it) } ?: LocationMessages.UNAVAILABLE
-                _binding?.locationInput?.post { _binding?.locationInput?.setText(name) }
+                geocodeHandler.removeCallbacks(geocodeTimeout)
+                val name = addresses.firstOrNull()?.let { formatAddress(it) }
+                _binding?.locationInput?.post {
+                    if (name != null) _binding?.locationInput?.setText(name)
+                    else showLocationError(LocationMessages.UNAVAILABLE)
+                }
             }
         } else {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                @Suppress("DEPRECATION")
-                val addresses = geocoder.getFromLocation(lat, lng, 1)
-                val name = addresses?.firstOrNull()?.let { formatAddress(it) } ?: LocationMessages.UNAVAILABLE
-                withContext(Dispatchers.Main) { _binding?.locationInput?.post { _binding?.locationInput?.setText(name) } }
+                val name = runCatching {
+                    @Suppress("DEPRECATION")
+                    geocoder.getFromLocation(lat, lng, 1)
+                        ?.firstOrNull()
+                        ?.let { formatAddress(it) }
+                }.getOrNull()
+                withContext(Dispatchers.Main) {
+                    if (name != null) _binding?.locationInput?.post { _binding?.locationInput?.setText(name) }
+                    else showLocationError(LocationMessages.UNAVAILABLE)
+                }
             }
         }
     }
@@ -170,8 +198,10 @@ class AddMatch : Fragment() {
         return parts.joinToString(", ").ifBlank { address.getAddressLine(0) ?: LocationMessages.UNAVAILABLE }
     }
 
-    private fun showLocationError(message: String) =
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    private fun showLocationError(message: String) {
+        val root = _binding?.root ?: return
+        Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
+    }
 
     private fun submitCreate() {
         viewModel.saveMatch(
@@ -253,5 +283,6 @@ class AddMatch : Fragment() {
         private const val LOG_TAG = "DinkLog"
         private const val ARG_MATCH_ID = "matchId"
         private const val NEW_MATCH = -1L
+        private const val LOCATION_TIMEOUT_MS = 4000L
     }
 }
