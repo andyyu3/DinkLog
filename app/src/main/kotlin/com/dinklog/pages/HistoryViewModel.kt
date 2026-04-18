@@ -2,17 +2,17 @@ package com.dinklog.pages
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.dinklog.DinkLogApp
 import com.dinklog.models.Match
 import com.dinklog.repositories.MatchRepository
 import com.dinklog.utils.PreferencesManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -23,12 +23,12 @@ class HistoryViewModel : ViewModel() {
 
     private val _userId = MutableStateFlow(preferencesManager.getUserId())
 
-    val matches: StateFlow<List<Match>> = _userId
+    val matches: Flow<PagingData<Match>> = _userId
         .flatMapLatest { userId ->
-            if (userId != null) matchRepository.getMatchesForUser(userId)
-            else flowOf(emptyList())
+            if (userId != null) matchRepository.getPagedMatchesForUser(userId)
+            else flowOf(PagingData.empty())
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        .cachedIn(viewModelScope)
 
     fun loadMatches() {
         _userId.value = preferencesManager.getUserId()
@@ -53,6 +53,14 @@ class HistoryViewModel : ViewModel() {
                 locationName = match.locationName,
                 notes = match.notes
             )
+        }
+    }
+
+    fun seedDebugMatches(onComplete: (Int) -> Unit) {
+        val userId = preferencesManager.getUserId() ?: return
+        viewModelScope.launch {
+            matchRepository.seedDummyMatches(userId)
+                .onSuccess { onComplete(it) }
         }
     }
 }

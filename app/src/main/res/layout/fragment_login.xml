@@ -2,10 +2,12 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:fillViewport="true"
+    android:accessibilityPaneTitle="@string/pane_title_login"
     android:background="@color/surface">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,6 +60,8 @@
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:layout_marginTop="32dp"
+            android:accessibilityHeading="true"
+            tools:ignore="UnusedAttribute"
             app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -78,7 +82,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -98,7 +104,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:autofillHints="password"
+                android:imeOptions="actionDone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton

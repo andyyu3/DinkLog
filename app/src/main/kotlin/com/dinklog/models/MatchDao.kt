@@ -1,18 +1,21 @@
 package com.dinklog.models
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.dinklog.utils.MatchColumns
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MatchDao {
 
     @Insert
     suspend fun insert(match: Match): Long
+
+    @Insert
+    suspend fun insertAll(matches: List<Match>)
 
     @Update
     suspend fun update(match: Match)
@@ -25,7 +28,7 @@ interface MatchDao {
             "WHERE ${MatchColumns.USER_ID} = :userId " +
             "ORDER BY ${MatchColumns.DATE} DESC"
     )
-    fun getMatchesByUser(userId: Long): Flow<List<Match>>
+    fun getMatchesByUserPaged(userId: Long): PagingSource<Int, Match>
 
     @Query(
         "SELECT * FROM ${MatchColumns.TABLE_NAME} " +

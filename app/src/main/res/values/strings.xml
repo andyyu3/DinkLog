@@ -36,6 +36,22 @@
     <string name="match_deleted">Match deleted</string>
     <string name="action_undo">Undo</string>
     <string name="action_logout">Log Out</string>
+    <string name="action_seed_debug">Seed 500 matches (debug)</string>
+    <string name="toast_seed_complete">Seeded %1$d matches</string>
+
+    <!-- Accessibility — content descriptions read by TalkBack -->
+    <string name="cd_match_row_win">Win, %1$d to %2$d, versus %3$s, %4$s at %5$s</string>
+    <string name="cd_match_row_loss">Loss, %1$d to %2$d, versus %3$s, %4$s at %5$s</string>
+    <string name="cd_stats_win_rate">Win rate, %1$s percent</string>
+    <string name="cd_stats_total_matches">%1$d total matches played</string>
+    <string name="cd_stats_wins">%1$d wins</string>
+    <string name="cd_stats_losses">%1$d losses</string>
+    <string name="pane_title_history">Match history</string>
+    <string name="pane_title_stats">Statistics</string>
+    <string name="pane_title_add_match">Log new match</string>
+    <string name="pane_title_edit_match">Edit match</string>
+    <string name="pane_title_login">Log in</string>
+    <string name="pane_title_signup">Sign up</string>
 
     <!-- Add Match -->
     <string name="title_add_match">Log Match</string>
