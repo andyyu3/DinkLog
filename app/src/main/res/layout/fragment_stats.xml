@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:accessibilityPaneTitle="@string/pane_title_stats"
     android:background="@color/surface">
 
     <androidx.appcompat.widget.Toolbar
@@ -38,9 +39,11 @@
 
             <!-- Win Rate Hero Card — gradient bg, white text -->
             <FrameLayout
+                android:id="@+id/win_rate_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
+                android:focusable="true"
                 android:background="@drawable/bg_stat_hero">
 
                 <LinearLayout
@@ -55,7 +58,8 @@
                         android:text="@string/label_win_rate"
                         android:textSize="14sp"
                         android:textColor="#B2FFFFFF"
-                        android:letterSpacing="0.08" />
+                        android:letterSpacing="0.08"
+                        android:importantForAccessibility="no" />
 
                     <TextView
                         android:id="@+id/win_rate"
@@ -64,15 +68,18 @@
                         android:text="0%"
                         android:textSize="48sp"
                         android:textStyle="bold"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:importantForAccessibility="no" />
                 </LinearLayout>
             </FrameLayout>
 
             <!-- Total Matches Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/total_matches_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
+                android:focusable="true"
                 app:cardBackgroundColor="@color/surface_card"
                 app:cardElevation="0dp"
                 app:cardCornerRadius="16dp"
@@ -90,7 +97,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_total_matches"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="@color/text_secondary"
+                        android:importantForAccessibility="no" />
 
                     <TextView
                         android:id="@+id/total_matches"
@@ -99,7 +107,8 @@
                         android:text="0"
                         android:textSize="40sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
+                        android:textColor="@color/text_primary"
+                        android:importantForAccessibility="no" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -111,10 +120,12 @@
 
                 <!-- Wins Card — tinted green -->
                 <FrameLayout
+                    android:id="@+id/wins_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="7dp"
+                    android:focusable="true"
                     android:background="@drawable/bg_win_card">
 
                     <LinearLayout
@@ -128,7 +139,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/label_wins"
                             android:textSize="14sp"
-                            android:textColor="@color/win_green" />
+                            android:textColor="@color/win_green"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:id="@+id/wins"
@@ -137,16 +149,19 @@
                             android:text="0"
                             android:textSize="40sp"
                             android:textStyle="bold"
-                            android:textColor="@color/win_green" />
+                            android:textColor="@color/win_green"
+                            android:importantForAccessibility="no" />
                     </LinearLayout>
                 </FrameLayout>
 
                 <!-- Losses Card — tinted red -->
                 <FrameLayout
+                    android:id="@+id/losses_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="7dp"
+                    android:focusable="true"
                     android:background="@drawable/bg_loss_card">
 
                     <LinearLayout
@@ -160,7 +175,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/label_losses"
                             android:textSize="14sp"
-                            android:textColor="@color/loss_red" />
+                            android:textColor="@color/loss_red"
+                            android:importantForAccessibility="no" />
 
                         <TextView
                             android:id="@+id/losses"
@@ -169,7 +185,8 @@
                             android:text="0"
                             android:textSize="40sp"
                             android:textStyle="bold"
-                            android:textColor="@color/loss_red" />
+                            android:textColor="@color/loss_red"
+                            android:importantForAccessibility="no" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>

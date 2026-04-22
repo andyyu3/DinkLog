@@ -12,8 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import android.widget.Toast
+import com.dinklog.BuildConfig
 import com.dinklog.DinkLogApp
 import com.dinklog.R
 import com.dinklog.components.MatchAdapter
@@ -66,11 +69,20 @@ class History : Fragment() {
 
     private fun setupToolbar() {
         binding.toolbar.inflateMenu(R.menu.toolbar_menu)
+        binding.toolbar.menu.findItem(R.id.action_seed_debug).isVisible = BuildConfig.DEBUG
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_logout -> { logout(); true }
+                R.id.action_seed_debug -> { seedDebug(); true }
                 else -> false
             }
+        }
+    }
+
+    private fun seedDebug() {
+        viewModel.seedDebugMatches { count ->
+            val msg = getString(R.string.toast_seed_complete, count)
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -88,7 +100,7 @@ class History : Fragment() {
 
     private fun setupSwipeToDelete() {
         val callback = SwipeToDeleteCallback(requireContext()) { position ->
-            val match = matchAdapter.currentList[position]
+            val match = matchAdapter.peek(position) ?: return@SwipeToDeleteCallback
             viewModel.deleteMatch(match)
             showUndoSnackbar(match)
         }
@@ -110,12 +122,16 @@ class History : Fragment() {
     private fun observeMatches() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.matches.collect { matches ->
-                    matchAdapter.submitList(matches)
-                    binding.emptyState.visibility = if (matches.isEmpty()) View.VISIBLE else View.GONE
-                    binding.matchesList.visibility = if (matches.isEmpty()) View.GONE else View.VISIBLE
+                viewModel.matches.collect { pagingData ->
+                    matchAdapter.submitData(pagingData)
                 }
             }
+        }
+        matchAdapter.addLoadStateListener { loadStates ->
+            val refreshDone = loadStates.refresh is LoadState.NotLoading
+            val isEmpty = refreshDone && matchAdapter.itemCount == 0
+            binding.emptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
+            binding.matchesList.visibility = if (isEmpty) View.GONE else View.VISIBLE
         }
     }
 

@@ -2,18 +2,17 @@ package com.dinklog.components
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dinklog.R
 import com.dinklog.databinding.ItemMatchBinding
 import com.dinklog.models.Match
 import com.dinklog.utils.formatMatchDate
 
-// ADDED: click callback so HistoryFragment can navigate to edit screen
 class MatchAdapter(
     private val onMatchClick: (Long) -> Unit
-) : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffCallback) {
+) : PagingDataAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffCallback) {
 
     class MatchViewHolder(
         private val binding: ItemMatchBinding
@@ -21,7 +20,6 @@ class MatchAdapter(
 
         fun bind(match: Match) {
             val context = binding.root.context
-
             binding.score.text = context.getString(
                 R.string.match_score_format, match.teamScore, match.opponentScore
             )
@@ -31,7 +29,6 @@ class MatchAdapter(
                 match.matchDate.formatMatchDate(),
                 match.locationName
             )
-
             val badge = binding.resultBadge
             badge.text = context.getString(
                 if (match.isWin) R.string.match_result_win else R.string.match_result_loss
@@ -39,6 +36,7 @@ class MatchAdapter(
             badge.setBackgroundResource(
                 if (match.isWin) R.drawable.bg_win_badge else R.drawable.bg_loss_badge
             )
+            binding.root.contentDescription = buildRowContentDescription(match)
         }
 
         private fun buildOpponentText(match: Match): String {
@@ -52,6 +50,19 @@ class MatchAdapter(
                 context.getString(R.string.match_vs_format, opponents)
             }
         }
+
+        private fun buildRowContentDescription(match: Match): String {
+            val context = binding.root.context
+            val opponents = listOfNotNull(match.opponent1Name, match.opponent2Name)
+                .joinToString(" and ")
+            val template = if (match.isWin) R.string.cd_match_row_win
+                else R.string.cd_match_row_loss
+            return context.getString(
+                template,
+                match.teamScore, match.opponentScore,
+                opponents, match.matchDate.formatMatchDate(), match.locationName
+            )
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchViewHolder {
@@ -62,9 +73,8 @@ class MatchAdapter(
     }
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
-        val match = getItem(position)
+        val match = getItem(position) ?: return
         holder.bind(match)
-        // ADDED: navigate to edit screen on row tap
         holder.itemView.setOnClickListener { onMatchClick(match.matchId) }
     }
 }

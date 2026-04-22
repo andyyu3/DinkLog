@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.dinklog.DinkLogApp
 import com.dinklog.R
 import com.dinklog.databinding.FragmentStatsBinding
+import com.dinklog.repositories.MatchStats
 import com.dinklog.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
@@ -66,19 +67,33 @@ class Stats : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stats.collect { stats ->
-                    if (stats == null) return@collect
-
-                    val hasMatches = stats.totalMatches > 0
-                    binding.statsContent.visibility = if (hasMatches) View.VISIBLE else View.GONE
-                    binding.emptyState.visibility = if (hasMatches) View.GONE else View.VISIBLE
-
-                    binding.totalMatches.text = stats.totalMatches.toString()
-                    binding.wins.text = stats.wins.toString()
-                    binding.losses.text = stats.losses.toString()
-                    binding.winRate.text = "%.1f%%".format(stats.winRate)
+                    stats?.let { renderStats(it) }
                 }
             }
         }
+    }
+
+    private fun renderStats(stats: MatchStats) {
+        val hasMatches = stats.totalMatches > 0
+        binding.statsContent.visibility = if (hasMatches) View.VISIBLE else View.GONE
+        binding.emptyState.visibility = if (hasMatches) View.GONE else View.VISIBLE
+        binding.totalMatches.text = stats.totalMatches.toString()
+        binding.wins.text = stats.wins.toString()
+        binding.losses.text = stats.losses.toString()
+        val winRateText = "%.1f".format(stats.winRate)
+        binding.winRate.text = "$winRateText%"
+        applyStatsAccessibility(stats, winRateText)
+    }
+
+    private fun applyStatsAccessibility(stats: MatchStats, winRateText: String) {
+        binding.winRateCard.contentDescription =
+            getString(R.string.cd_stats_win_rate, winRateText)
+        binding.totalMatchesCard.contentDescription =
+            getString(R.string.cd_stats_total_matches, stats.totalMatches)
+        binding.winsCard.contentDescription =
+            getString(R.string.cd_stats_wins, stats.wins)
+        binding.lossesCard.contentDescription =
+            getString(R.string.cd_stats_losses, stats.losses)
     }
 
     private fun loadData() {

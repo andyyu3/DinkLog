@@ -2,9 +2,11 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:accessibilityPaneTitle="@string/pane_title_add_match"
     android:background="@color/surface">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +24,8 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/primary"
+            android:accessibilityHeading="true"
+            tools:ignore="UnusedAttribute"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -36,6 +40,8 @@
             android:textStyle="bold"
             android:textColor="@color/text_secondary"
             android:letterSpacing="0.1"
+            android:accessibilityHeading="true"
+            tools:ignore="UnusedAttribute"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -54,7 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_opponent1"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -72,7 +79,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_opponent2"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +98,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_partner"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Score section label -->
@@ -104,6 +113,8 @@
             android:textStyle="bold"
             android:textColor="@color/text_secondary"
             android:letterSpacing="0.1"
+            android:accessibilityHeading="true"
+            tools:ignore="UnusedAttribute"
             app:layout_constraintTop_toBottomOf="@id/partner_layout"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -123,7 +134,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_team_score"
-                android:inputType="number" />
+                android:inputType="number"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -142,7 +154,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_opponent_score"
-                android:inputType="number" />
+                android:inputType="number"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Details section label -->
@@ -156,6 +169,8 @@
             android:textStyle="bold"
             android:textColor="@color/text_secondary"
             android:letterSpacing="0.1"
+            android:accessibilityHeading="true"
+            tools:ignore="UnusedAttribute"
             app:layout_constraintTop_toBottomOf="@id/team_score_layout"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -174,7 +189,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/label_location"
-                android:inputType="text" />
+                android:inputType="text"
+                android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

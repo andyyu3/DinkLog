@@ -70,3 +70,28 @@ object LocationMessages {
     const val PERMISSION_DENIED = "Location access denied — please enter location manually"
     const val UNAVAILABLE = "Could not detect location — please enter manually"
 }
+
+object PagingConstants {
+    const val PAGE_SIZE = 20
+    const val PREFETCH_DISTANCE = 10
+    const val INITIAL_LOAD_SIZE = 40
+    const val MAX_SIZE = 100
+}
+
+object DebugSeedConstants {
+    const val DEFAULT_SEED_COUNT = 500
+    const val HALF_DAY_MS = 12L * 60 * 60 * 1000
+    const val MIN_SCORE = 5
+    const val MAX_SCORE = 15
+    val SAMPLE_NAMES = listOf(
+        "Alice", "Bob", "Carlos", "Diana", "Evan", "Fiona",
+        "Guo", "Hana", "Ibrahim", "Jess", "Kai", "Lina",
+        "Mateo", "Noor", "Oscar", "Priya", "Quinn", "Ruth",
+        "Sam", "Tina"
+    )
+    val SAMPLE_LOCATIONS = listOf(
+        "City Park", "Rec Center", "YMCA", "Backyard",
+        "Community Center", "Pickleball Club", "School Gym",
+        "Public Courts"
+    )
+}
